@@ -16,6 +16,10 @@ export default function SharedInventory({
     const [editingItem, setEditingItem] = useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deletingItem, setDeletingItem] = useState(null);
+    const [viewMode, setViewMode] = useState(() => {
+        // Cargar el modo de vista desde localStorage o usar 'cards' por defecto
+        return localStorage.getItem("shared-inventory-view-mode") || "cards";
+    });
 
     // Debug logs
 
@@ -161,6 +165,12 @@ export default function SharedInventory({
         if (!filterUserId) return null;
         const user = users.find((u) => u.id == filterUserId);
         return user ? user.name : "Usuario desconocido";
+    };
+
+    // Función para cambiar el modo de vista
+    const handleViewModeChange = (mode) => {
+        setViewMode(mode);
+        localStorage.setItem("shared-inventory-view-mode", mode);
     };
 
     return (
@@ -323,11 +333,42 @@ export default function SharedInventory({
                                 </p>
                             </div>
                         </div>
+                        <div className="flex items-center justify-end">
+                            {/* Botones de vista */}
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={() =>
+                                        handleViewModeChange("cards")
+                                    }
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        viewMode === "cards"
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    }`}
+                                >
+                                    📋 Cards
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleViewModeChange("table")
+                                    }
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        viewMode === "table"
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    }`}
+                                >
+                                    📊 Tabla
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     {inventory && inventory.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {inventory.map((item) => (
+                        viewMode === "cards" ? (
+                            // Vista de Cards
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {inventory.map((item) => (
                                 <div
                                     key={item.id}
                                     className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
@@ -459,25 +500,133 @@ export default function SharedInventory({
                                                 onClick={() =>
                                                     handleEditInventory(item)
                                                 }
-                                                className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center"
+                                                className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
                                             >
-                                                <span className="mr-1">✏️</span>
-                                                Editar
+                                                <span>✏️</span>
+                                                <span>Editar</span>
                                             </button>
                                             <button
                                                 onClick={() =>
                                                     handleDeleteInventory(item)
                                                 }
-                                                className="flex-1 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center"
+                                                className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
                                             >
-                                                <span className="mr-1">🗑️</span>
-                                                Eliminar
+                                                <span>🗑️</span>
+                                                <span>Eliminar</span>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
+                        ) : (
+                            // Vista de Tabla
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 dark:bg-gray-700">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                📦 Producto
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                👤 Usuario
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                🏷️ Categoría
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                📊 Cantidad
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                💰 Precio Compra
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                💎 Valor Total
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                ⚙️ Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        {inventory.map((item) => (
+                                            <tr
+                                                key={item.id}
+                                                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="flex-shrink-0 h-10 w-10">
+                                                            <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
+                                                                <span className="text-emerald-600 dark:text-emerald-400 text-sm">
+                                                                    📦
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="ml-4">
+                                                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {item.product?.name || "Producto no encontrado"}
+                                                            </div>
+                                                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                                V{item.version}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {item.user?.name || "Usuario desconocido"}
+                                                        {item.user_id == currentUserId && " (TÚ)"}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {getCategoryName(item.product?.category_id)}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {item.quantity}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {formatPrice(item.purchase_price)}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                                                        {formatPrice(item.quantity * (item.purchase_price || 0))}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditInventory(item)
+                                                            }
+                                                            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 flex items-center space-x-1"
+                                                        >
+                                                            <span>✏️</span>
+                                                            <span>Editar</span>
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteInventory(item)
+                                                            }
+                                                            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 flex items-center space-x-1"
+                                                        >
+                                                            <span>🗑️</span>
+                                                            <span>Eliminar</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )
                     ) : (
                         <div className="text-center py-12">
                             <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">

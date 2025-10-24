@@ -138,15 +138,25 @@ const Analytics = ({ analytics }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                     {/* Top Productos Vendidos */}
                     <div className="bg-gradient-to-br from-orange-50 to-red-100 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl shadow-lg p-6 border border-orange-200 dark:border-orange-700">
-                        <div className="flex items-center mb-6">
-                            <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mr-4">
-                                <span className="text-white text-xl">🏆</span>
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center">
+                                <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mr-4">
+                                    <span className="text-white text-xl">🏆</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                                        🏆 Top Productos Vendidos
+                                    </h3>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    🏆 Top Productos Vendidos
-                                </h3>
-                            </div>
+                            
+                            {/* Botón pequeño en la esquina superior derecha */}
+                            <Link
+                                href="/vender"
+                                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg text-sm"
+                            >
+                                Vender
+                            </Link>
                         </div>
                         <div className="space-y-4">
                             {analytics.top_products &&

@@ -86,6 +86,13 @@ class AnalyticsController extends Controller
         $totalRevenue = $productSales->sum('total_amount');
         $totalQuantity = $productSales->sum('quantity_sold');
         $totalCommissions = $productSales->sum('commission');
+        $totalSales = $productSales->count();
+        
+        // Calcular costos y ganancia neta
+        $productCost = $product->purchase_price ?? 0; // Precio de compra del producto
+        $totalCosts = $totalQuantity * $productCost; // Costo total de productos vendidos
+        $netProfit = $totalRevenue - $totalCosts - $totalCommissions; // Ganancia neta
+        $profitMargin = $totalRevenue > 0 ? ($netProfit / $totalRevenue) * 100 : 0; // Margen de ganancia
 
         return Inertia::render('Analytics/ProductSalesDetails', [
             'product' => $product,
@@ -94,6 +101,10 @@ class AnalyticsController extends Controller
             'totalRevenue' => $totalRevenue,
             'totalQuantity' => $totalQuantity,
             'totalCommissions' => $totalCommissions,
+            'totalSales' => $totalSales,
+            'totalCosts' => $totalCosts,
+            'netProfit' => $netProfit,
+            'profitMargin' => $profitMargin,
         ]);
     }
 
@@ -115,6 +126,18 @@ class AnalyticsController extends Controller
         $totalRevenue = $sellerSales->sum('total_amount');
         $totalQuantity = $sellerSales->sum('quantity_sold');
         $totalCommissions = $sellerSales->sum('commission');
+        
+        // Calcular costos totales de productos vendidos por este vendedor
+        $totalCosts = 0;
+        foreach ($sellerSales as $sale) {
+            if ($sale->product) {
+                $totalCosts += $sale->quantity_sold * ($sale->product->purchase_price ?? 0);
+            }
+        }
+        
+        // Calcular ganancia neta
+        $netProfit = $totalRevenue - $totalCosts - $totalCommissions;
+        $profitMargin = $totalRevenue > 0 ? ($netProfit / $totalRevenue) * 100 : 0;
 
         return Inertia::render('Analytics/SellerSalesDetails', [
             'seller' => $seller,
@@ -123,6 +146,9 @@ class AnalyticsController extends Controller
             'totalRevenue' => $totalRevenue,
             'totalQuantity' => $totalQuantity,
             'totalCommissions' => $totalCommissions,
+            'totalCosts' => $totalCosts,
+            'netProfit' => $netProfit,
+            'profitMargin' => $profitMargin,
         ]);
     }
 }

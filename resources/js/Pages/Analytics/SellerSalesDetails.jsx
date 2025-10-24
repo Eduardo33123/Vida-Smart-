@@ -9,6 +9,9 @@ const SellerSalesDetails = ({
     totalRevenue,
     totalQuantity,
     totalCommissions,
+    totalCosts,
+    netProfit,
+    profitMargin,
 }) => {
     // Filtrar solo las ventas de este vendedor específico
     const sellerSales = sales
@@ -18,18 +21,29 @@ const SellerSalesDetails = ({
         : [];
 
     const formatCurrency = (amount) => {
+        if (amount === null || amount === undefined || isNaN(amount)) {
+            return "$0.00";
+        }
         return new Intl.NumberFormat("es-MX", {
             style: "currency",
             currency: "MXN",
-        }).format(amount);
+        }).format(Number(amount));
     };
 
-    const formatDate = (date) => {
-        return new Date(date).toLocaleDateString("es-MX");
+    const formatDate = (dateString) => {
+        if (!dateString) return "-";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return "-";
+        }
+        return date.toLocaleDateString("es-MX");
     };
 
     const formatNumber = (number) => {
-        return new Intl.NumberFormat("es-MX").format(number);
+        if (number === null || number === undefined || isNaN(number)) {
+            return "0";
+        }
+        return new Intl.NumberFormat("es-MX").format(Number(number));
     };
 
     return (
@@ -149,54 +163,53 @@ const SellerSalesDetails = ({
                         </div>
                     </div>
 
-                    {/* Promedios */}
+                    {/* Ganancia Neta */}
                     <div className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl shadow-lg p-6 border border-purple-200 dark:border-purple-700">
                         <div className="flex items-center mb-4">
                             <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4">
-                                <span className="text-white text-xl">📊</span>
+                                <span className="text-white text-xl">💰</span>
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    📊 Promedios
+                                    Ganancia Neta
                                 </h3>
                             </div>
                         </div>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between py-2 px-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
                                 <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    Precio Promedio:
+                                    Total Costos:
                                 </span>
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {formatCurrency(
-                                        totalQuantity > 0
-                                            ? totalRevenue / totalQuantity
-                                            : 0
-                                    )}
+                                <span className="font-semibold text-red-600 dark:text-red-400">
+                                    {formatCurrency(totalCosts || 0)}
                                 </span>
                             </div>
                             <div className="flex items-center justify-between py-2 px-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
                                 <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    Cantidad por Venta:
+                                    Ganancia Neta:
                                 </span>
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {formatNumber(
-                                        sellerSales.length > 0
-                                            ? totalQuantity / sellerSales.length
-                                            : 0
-                                    )}
+                                <span
+                                    className={`font-semibold ${
+                                        (netProfit || 0) >= 0
+                                            ? "text-green-600 dark:text-green-400"
+                                            : "text-red-600 dark:text-red-400"
+                                    }`}
+                                >
+                                    {formatCurrency(netProfit || 0)}
                                 </span>
                             </div>
                             <div className="flex items-center justify-between py-2 px-3 bg-white/50 dark:bg-gray-800/50 rounded-lg">
                                 <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    Comisión Promedio:
+                                    Margen de Ganancia:
                                 </span>
-                                <span className="font-semibold text-gray-900 dark:text-white">
-                                    {formatCurrency(
-                                        sellerSales.length > 0
-                                            ? totalCommissions /
-                                                  sellerSales.length
-                                            : 0
-                                    )}
+                                <span
+                                    className={`font-semibold ${
+                                        (profitMargin || 0) >= 0
+                                            ? "text-green-600 dark:text-green-400"
+                                            : "text-red-600 dark:text-red-400"
+                                    }`}
+                                >
+                                    {formatNumber(profitMargin || 0)}%
                                 </span>
                             </div>
                         </div>
