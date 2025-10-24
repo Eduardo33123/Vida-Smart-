@@ -27,10 +27,21 @@ class SaleController extends Controller
         try {
             $productId = $request->get('product');
             $version = $request->get('version');
+            $userId = $request->get('user');
 
-            if ($productId && $version) {
+            if ($productId && $version && $userId) {
+                // Filtrar ventas por producto, versión y usuario específicos
+                $sales = $this->saleService->getSalesByProductVersionAndUser($productId, $version, $userId);
+                $statistics = $this->saleService->getSalesStatisticsByProduct($productId);
+                $selectedProduct = $this->saleService->getProductById($productId);
+            } elseif ($productId && $version) {
                 // Filtrar ventas por producto y versión específica
                 $sales = $this->saleService->getSalesByProductAndVersion($productId, $version);
+                $statistics = $this->saleService->getSalesStatisticsByProduct($productId);
+                $selectedProduct = $this->saleService->getProductById($productId);
+            } elseif ($productId && $userId) {
+                // Filtrar ventas por producto y usuario específicos
+                $sales = $this->saleService->getSalesByProductAndUser($productId, $userId);
                 $statistics = $this->saleService->getSalesStatisticsByProduct($productId);
                 $selectedProduct = $this->saleService->getProductById($productId);
             } elseif ($productId) {
@@ -38,6 +49,16 @@ class SaleController extends Controller
                 $sales = $this->saleService->getSalesByProduct($productId);
                 $statistics = $this->saleService->getSalesStatisticsByProduct($productId);
                 $selectedProduct = $this->saleService->getProductById($productId);
+            } elseif ($userId) {
+                // Filtrar ventas por usuario específico
+                $sales = $this->saleService->getSalesByUser($userId);
+                $statistics = $this->saleService->getSalesStatistics();
+                $selectedProduct = null;
+            } elseif ($version) {
+                // Filtrar ventas por versión específica
+                $sales = $this->saleService->getSalesByVersion($version);
+                $statistics = $this->saleService->getSalesStatistics();
+                $selectedProduct = null;
             } else {
                 // Mostrar todas las ventas
                 $sales = $this->saleService->getAllSales();
@@ -47,12 +68,21 @@ class SaleController extends Controller
 
             $products = $this->saleService->getAvailableProducts();
             $users = User::select('id', 'name')->get();
-            
-            // Get available versions for the selected product
+
+            // Get available versions globally (from all sales)
             $availableVersions = [];
             if ($selectedProduct) {
+                // If there's a selected product, get versions for that product
                 $versionStocks = $this->versionStockService->getVersionStocks($selectedProduct->id);
                 $availableVersions = $versionStocks->pluck('version')->sort()->values()->toArray();
+            } else {
+                // Get all versions that exist in sales
+                $availableVersions = \App\Models\Sale::distinct()
+                    ->whereNotNull('product_version')
+                    ->pluck('product_version')
+                    ->sort()
+                    ->values()
+                    ->toArray();
             }
 
             return Inertia::render('Vender', [
@@ -64,6 +94,7 @@ class SaleController extends Controller
                 'isFiltered' => $productId ? true : false,
                 'selectedVersion' => $version,
                 'availableVersions' => $availableVersions,
+                'selectedUser' => $userId ? User::find($userId) : null,
             ]);
         } catch (\Exception $e) {
 
@@ -80,6 +111,7 @@ class SaleController extends Controller
                 'users' => collect([]),
                 'selectedProduct' => null,
                 'isFiltered' => false,
+                'selectedUser' => null,
             ]);
         }
     }

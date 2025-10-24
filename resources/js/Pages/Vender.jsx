@@ -11,10 +11,16 @@ export default function Vender({
     isFiltered,
     selectedVersion,
     availableVersions = [],
+    selectedUser,
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProductForSale, setSelectedProductForSale] = useState(null);
     const [editingSale, setEditingSale] = useState(null);
+    const [viewMode, setViewMode] = useState(() => {
+        // Cargar el modo de vista desde localStorage o usar 'cards' por defecto
+        return localStorage.getItem("vender-view-mode") || "cards";
+    });
+    const [selectedUserState, setSelectedUserState] = useState(null);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         product_id: "",
@@ -112,6 +118,29 @@ export default function Vender({
         setSelectedProductForSale(product);
     };
 
+    const handleViewModeChange = (mode) => {
+        setViewMode(mode);
+        localStorage.setItem("vender-view-mode", mode);
+    };
+
+    const handleUserFilter = (userId) => {
+        if (userId) {
+            setSelectedUserState(userId);
+            window.location.href = `/vender?user=${userId}`;
+        } else {
+            setSelectedUserState(null);
+            window.location.href = "/vender";
+        }
+    };
+
+    const handleVersionFilter = (version) => {
+        if (version) {
+            window.location.href = `/vender?version=${version}`;
+        } else {
+            window.location.href = "/vender";
+        }
+    };
+
     // Función para formatear fecha
     const formatDate = (dateString) => {
         if (!dateString) return "";
@@ -156,7 +185,35 @@ export default function Vender({
                                     💰 Módulo de Ventas
                                 </h1>
                                 <p className="text-lg text-gray-600 dark:text-gray-300">
-                                    {selectedProduct && selectedVersion ? (
+                                    {selectedProduct &&
+                                    selectedVersion &&
+                                    selectedUser ? (
+                                        <>
+                                            Historial de ventas:{" "}
+                                            <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                                {selectedProduct.name}
+                                            </span>{" "}
+                                            -{" "}
+                                            <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                                Versión {selectedVersion}
+                                            </span>{" "}
+                                            por{" "}
+                                            <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                                {selectedUser.name}
+                                            </span>
+                                        </>
+                                    ) : selectedProduct && selectedUser ? (
+                                        <>
+                                            Historial de ventas:{" "}
+                                            <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                                {selectedProduct.name}
+                                            </span>{" "}
+                                            por{" "}
+                                            <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                                {selectedUser.name}
+                                            </span>
+                                        </>
+                                    ) : selectedProduct && selectedVersion ? (
                                         <>
                                             Historial de ventas:{" "}
                                             <span className="font-semibold text-purple-600 dark:text-purple-400">
@@ -172,6 +229,20 @@ export default function Vender({
                                             Historial de ventas:{" "}
                                             <span className="font-semibold text-purple-600 dark:text-purple-400">
                                                 {selectedProduct.name}
+                                            </span>
+                                        </>
+                                    ) : selectedUser ? (
+                                        <>
+                                            Historial de ventas por{" "}
+                                            <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                                {selectedUser.name}
+                                            </span>
+                                        </>
+                                    ) : selectedVersion ? (
+                                        <>
+                                            Historial de ventas -{" "}
+                                            <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                                Versión {selectedVersion}
                                             </span>
                                         </>
                                     ) : (
@@ -256,6 +327,69 @@ export default function Vender({
                     </div>
                 </div>
 
+                {/* Filtros */}
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            🔍 Filtros de Búsqueda
+                        </h3>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                            {sales?.length || 0} ventas registradas
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-4">
+                        {/* Filtro por Usuario */}
+                        <select
+                            onChange={(e) => handleUserFilter(e.target.value)}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium border-0 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            defaultValue=""
+                        >
+                            <option value="">👤 Todos los Vendedores</option>
+                            {users &&
+                                users.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.name}
+                                    </option>
+                                ))}
+                        </select>
+
+                        {/* Filtro por Versión */}
+                        <select
+                            onChange={(e) =>
+                                handleVersionFilter(e.target.value)
+                            }
+                            className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium border-0 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                            defaultValue=""
+                        >
+                            <option value="">📈 Todas las Versiones</option>
+                            {availableVersions &&
+                            availableVersions.length > 0 ? (
+                                availableVersions.map((version) => (
+                                    <option key={version} value={version}>
+                                        Versión {version}
+                                    </option>
+                                ))
+                            ) : (
+                                <>
+                                    <option value="1">Versión 1</option>
+                                    <option value="2">Versión 2</option>
+                                </>
+                            )}
+                        </select>
+
+                        {/* Botón para limpiar filtros */}
+                        {(isFiltered || selectedUser || selectedVersion) && (
+                            <button
+                                onClick={() => router.get("/vender")}
+                                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                            >
+                                🗑️ Limpiar Filtros
+                            </button>
+                        )}
+                    </div>
+                </div>
+
                 {/* Historial de Ventas */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
                     <div className="flex items-center justify-between mb-6">
@@ -265,8 +399,14 @@ export default function Vender({
                             </div>
                             <div>
                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                    {isFiltered
+                                    {isFiltered && selectedUser
+                                        ? `Historial de Ventas - ${selectedProduct?.name} - ${selectedUser.name}`
+                                        : isFiltered
                                         ? `Historial de Ventas - ${selectedProduct?.name}`
+                                        : selectedUser
+                                        ? `Historial de Ventas - ${selectedUser.name}`
+                                        : selectedVersion
+                                        ? `Historial de Ventas - Versión ${selectedVersion}`
                                         : "Historial de Ventas"}
                                 </h2>
                                 {isFiltered && selectedProduct && (
@@ -308,278 +448,403 @@ export default function Vender({
                                 )}
                             </div>
                         </div>
-                        <div className="flex items-center space-x-4">
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
-                                {sales?.length || 0} ventas registradas
-                            </div>
-                            {isFiltered &&
-                                selectedProduct &&
-                                availableVersions.length > 0 && (
-                                    <select
-                                        onChange={(e) => {
-                                            if (e.target.value) {
-                                                window.location.href = `/vender?product=${selectedProduct.id}&version=${e.target.value}`;
-                                            }
-                                        }}
-                                        className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-sm font-medium border-0 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                                        defaultValue=""
-                                    >
-                                        <option value="" disabled>
-                                            📈 Filtrar por Versión
-                                        </option>
-                                        {availableVersions.map((version) => (
-                                            <option
-                                                key={version}
-                                                value={version}
-                                            >
-                                                Versión {version}
-                                            </option>
-                                        ))}
-                                    </select>
-                                )}
-                            {isFiltered && (
+                        <div className="flex items-center justify-end">
+                            {/* Botones de vista */}
+                            <div className="flex items-center space-x-2">
                                 <button
-                                    onClick={() => router.get("/vender")}
-                                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                                    onClick={() =>
+                                        handleViewModeChange("cards")
+                                    }
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        viewMode === "cards"
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    }`}
                                 >
-                                    📋 Ver Todas las Ventas
+                                    📋 Cards
                                 </button>
-                            )}
+                                <button
+                                    onClick={() =>
+                                        handleViewModeChange("table")
+                                    }
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                        viewMode === "table"
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    }`}
+                                >
+                                    📊 Tabla
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     {sales && sales.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {sales.map((sale) => (
-                                <div
-                                    key={sale.id}
-                                    className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
-                                >
-                                    {/* Header de la Card */}
-                                    <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center">
-                                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                                                    <span className="text-white text-sm">
-                                                        📦
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-white font-bold text-sm truncate max-w-32">
-                                                        {sale.product?.name ||
-                                                            "Producto no encontrado"}
-                                                    </h3>
-                                                    <div className="flex items-center space-x-2">
-                                                        <p className="text-white/80 text-xs">
-                                                            {formatDate(
-                                                                sale.sale_date
-                                                            )}
-                                                        </p>
-                                                        <span className="text-white/80 text-xs bg-white/20 px-2 py-1 rounded-full">
-                                                            V
-                                                            {sale.product_version ||
-                                                                1}
+                        viewMode === "cards" ? (
+                            // Vista de Cards
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {sales.map((sale) => (
+                                    <div
+                                        key={sale.id}
+                                        className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
+                                    >
+                                        {/* Header de la Card */}
+                                        <div className="p-4 bg-gradient-to-r from-emerald-500 to-green-600">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center">
+                                                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                                                        <span className="text-white text-sm">
+                                                            📦
                                                         </span>
                                                     </div>
+                                                    <div>
+                                                        <h3 className="text-white font-bold text-sm truncate max-w-32">
+                                                            {sale.product
+                                                                ?.name ||
+                                                                "Producto no encontrado"}
+                                                        </h3>
+                                                        <div className="flex items-center space-x-2">
+                                                            <p className="text-white/80 text-xs">
+                                                                {formatDate(
+                                                                    sale.sale_date
+                                                                )}
+                                                            </p>
+                                                            <span className="text-white/80 text-xs bg-white/20 px-2 py-1 rounded-full">
+                                                                V
+                                                                {sale.product_version ||
+                                                                    1}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-white font-bold text-lg">
+                                                        {formatPrice(
+                                                            sale.total_amount
+                                                        )}
+                                                    </p>
+                                                    <p className="text-white/80 text-xs">
+                                                        {sale.quantity_sold}{" "}
+                                                        unidades
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
-                                                <p className="text-white font-bold text-lg">
-                                                    {formatPrice(
-                                                        sale.total_amount
-                                                    )}
-                                                </p>
-                                                <p className="text-white/80 text-xs">
-                                                    {sale.quantity_sold}{" "}
-                                                    unidades
-                                                </p>
+                                        </div>
+
+                                        {/* Contenido de la Card */}
+                                        <div className="p-4">
+                                            <div className="space-y-3">
+                                                {/* Cliente */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        👤
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Cliente
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {sale.client_name ||
+                                                                "Sin nombre"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Vendedor */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        🏪
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Vendedor
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {sale.seller
+                                                                ?.name ||
+                                                                "No asignado"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Precio Unitario */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        💰
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Precio Unitario
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {formatPrice(
+                                                                sale.sale_price
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Precio de Compra */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        🛒
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Precio de Compra
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {formatPrice(
+                                                                sale.product
+                                                                    ?.purchase_price
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Ganancia */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        💎
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Ganancia
+                                                        </p>
+                                                        <p
+                                                            className={`text-sm font-medium ${
+                                                                calculateProfit(
+                                                                    sale
+                                                                ) >= 0
+                                                                    ? "text-green-600 dark:text-green-400"
+                                                                    : "text-red-600 dark:text-red-400"
+                                                            }`}
+                                                        >
+                                                            {formatPrice(
+                                                                calculateProfit(
+                                                                    sale
+                                                                )
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Color si existe */}
+                                                {sale.color && (
+                                                    <div className="flex items-center">
+                                                        <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                            🎨
+                                                        </span>
+                                                        <div>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Color
+                                                            </p>
+                                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {sale.color}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Comisión si existe */}
+                                                {sale.commission && (
+                                                    <div className="flex items-center">
+                                                        <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                            💸
+                                                        </span>
+                                                        <div>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Comisión
+                                                            </p>
+                                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {formatPrice(
+                                                                    sale.commission
+                                                                )}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Gastos Adicionales si existen */}
+                                                {sale.additional_expenses && (
+                                                    <div className="flex items-center">
+                                                        <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                            📦
+                                                        </span>
+                                                        <div>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Gastos
+                                                                Adicionales
+                                                            </p>
+                                                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {formatPrice(
+                                                                    sale.additional_expenses
+                                                                )}
+                                                            </p>
+                                                            {sale.expenses_description && (
+                                                                <p className="text-xs text-gray-400 dark:text-gray-500 truncate max-w-32">
+                                                                    {
+                                                                        sale.expenses_description
+                                                                    }
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {/* Botones de Acción */}
+                                            <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                                                <button
+                                                    onClick={() =>
+                                                        handleEditSale(sale)
+                                                    }
+                                                    className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
+                                                >
+                                                    ✏️ Editar
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteSale(sale)
+                                                    }
+                                                    className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
+                                                >
+                                                    🗑️ Eliminar
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-
-                                    {/* Contenido de la Card */}
-                                    <div className="p-4">
-                                        <div className="space-y-3">
-                                            {/* Cliente */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    👤
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Cliente
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                ))}
+                            </div>
+                        ) : (
+                            // Vista de Tabla
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className="bg-gray-50 dark:bg-gray-700">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                📦 Producto
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                👤 Cliente
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                🏪 Vendedor
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                📊 Cantidad
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                💰 Precio
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                💵 Total
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                📅 Fecha
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                                ⚙️ Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                        {sales.map((sale) => (
+                                            <tr
+                                                key={sale.id}
+                                                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                            >
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        <div className="flex-shrink-0 h-10 w-10">
+                                                            <div className="h-10 w-10 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
+                                                                <span className="text-emerald-600 dark:text-emerald-400 text-sm">
+                                                                    📦
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="ml-4">
+                                                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                                {sale.product
+                                                                    ?.name ||
+                                                                    "Producto no encontrado"}
+                                                            </div>
+                                                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                                V
+                                                                {sale.product_version ||
+                                                                    1}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
                                                         {sale.client_name ||
                                                             "Sin nombre"}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Vendedor */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    🏪
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Vendedor
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
                                                         {sale.seller?.name ||
                                                             "No asignado"}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Precio Unitario */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    💰
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Precio Unitario
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {sale.quantity_sold}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
                                                         {formatPrice(
                                                             sale.sale_price
                                                         )}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Precio de Compra */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    🛒
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Precio de Compra
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
                                                         {formatPrice(
-                                                            sale.product
-                                                                ?.purchase_price
-                                                        )}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Ganancia */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    💎
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Ganancia
-                                                    </p>
-                                                    <p
-                                                        className={`text-sm font-medium ${
-                                                            calculateProfit(
-                                                                sale
-                                                            ) >= 0
-                                                                ? "text-green-600 dark:text-green-400"
-                                                                : "text-red-600 dark:text-red-400"
-                                                        }`}
-                                                    >
-                                                        {formatPrice(
-                                                            calculateProfit(
-                                                                sale
-                                                            )
-                                                        )}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Color si existe */}
-                                            {sale.color && (
-                                                <div className="flex items-center">
-                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                        🎨
-                                                    </span>
-                                                    <div>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                            Color
-                                                        </p>
-                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                            {sale.color}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {/* Comisión si existe */}
-                                            {sale.commission && (
-                                                <div className="flex items-center">
-                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                        💸
-                                                    </span>
-                                                    <div>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                            Comisión
-                                                        </p>
-                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                            {formatPrice(
-                                                                sale.commission
-                                                            )}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {/* Gastos Adicionales si existen */}
-                                            {sale.additional_expenses && (
-                                                <div className="flex items-center">
-                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                        📦
-                                                    </span>
-                                                    <div>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                            Gastos Adicionales
-                                                        </p>
-                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                            {formatPrice(
-                                                                sale.additional_expenses
-                                                            )}
-                                                        </p>
-                                                        {sale.expenses_description && (
-                                                            <p className="text-xs text-gray-400 dark:text-gray-500 truncate max-w-32">
-                                                                {
-                                                                    sale.expenses_description
-                                                                }
-                                                            </p>
+                                                            sale.total_amount
                                                         )}
                                                     </div>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Botones de Acción */}
-                                        <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                                            <button
-                                                onClick={() =>
-                                                    handleEditSale(sale)
-                                                }
-                                                className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
-                                            >
-                                                ✏️ Editar
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteSale(sale)
-                                                }
-                                                className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
-                                            >
-                                                🗑️ Eliminar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 dark:text-white">
+                                                        {formatDate(
+                                                            sale.sale_date
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <div className="flex space-x-2">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleEditSale(
+                                                                    sale
+                                                                )
+                                                            }
+                                                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                                                        >
+                                                            ✏️ Editar
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteSale(
+                                                                    sale
+                                                                )
+                                                            }
+                                                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                                                        >
+                                                            🗑️ Eliminar
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )
                     ) : (
                         <div className="text-center py-16">
                             <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">

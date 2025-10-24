@@ -23,9 +23,44 @@ interface SaleServiceInterface
     public function getSalesByProductAndVersion(int $productId, int $version): Collection;
 
     /**
+     * Get sales by user
+     */
+    public function getSalesByUser(int $userId): Collection;
+
+    /**
+     * Get sales by product and user
+     */
+    public function getSalesByProductAndUser(int $productId, int $userId): Collection;
+
+    /**
+     * Get sales by product, version and user
+     */
+    public function getSalesByProductVersionAndUser(int $productId, int $version, int $userId): Collection;
+
+    /**
+     * Get sales by version
+     */
+    public function getSalesByVersion(int $version): Collection;
+
+    /**
      * Get sales statistics
      */
     public function getSalesStatistics(): array;
+
+    /**
+     * Get sales statistics by product
+     */
+    public function getSalesStatisticsByProduct(int $productId): array;
+
+    /**
+     * Get product by ID
+     */
+    public function getProductById(int $productId);
+
+    /**
+     * Get sales by product
+     */
+    public function getSalesByProduct(int $productId): Collection;
 
     /**
      * Process a new sale and update inventory

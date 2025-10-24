@@ -74,6 +74,69 @@ class SaleService implements SaleServiceInterface
     }
 
     /**
+     * Get sales by user
+     */
+    public function getSalesByUser(int $userId): Collection
+    {
+        try {
+            return Sale::with(['product', 'seller'])
+                ->where('seller_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            return collect([]);
+        }
+    }
+
+    /**
+     * Get sales by product and user
+     */
+    public function getSalesByProductAndUser(int $productId, int $userId): Collection
+    {
+        try {
+            return Sale::with(['product', 'seller'])
+                ->where('product_id', $productId)
+                ->where('seller_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            return collect([]);
+        }
+    }
+
+    /**
+     * Get sales by product, version and user
+     */
+    public function getSalesByProductVersionAndUser(int $productId, int $version, int $userId): Collection
+    {
+        try {
+            return Sale::with(['product', 'seller'])
+                ->where('product_id', $productId)
+                ->where('product_version', $version)
+                ->where('seller_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            return collect([]);
+        }
+    }
+
+    /**
+     * Get sales by version
+     */
+    public function getSalesByVersion(int $version): Collection
+    {
+        try {
+            return Sale::with(['product', 'seller'])
+                ->where('product_version', $version)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            return collect([]);
+        }
+    }
+
+    /**
      * Get sales statistics by product
      */
     public function getSalesStatisticsByProduct(int $productId): array
