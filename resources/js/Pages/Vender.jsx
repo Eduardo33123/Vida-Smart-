@@ -31,7 +31,6 @@ export default function Vender({
         sale_price: "",
         commission: "",
         additional_expenses: "",
-        expenses_description: "",
         sale_date: new Date().toISOString().split("T")[0],
         notes: "",
     });
@@ -82,7 +81,6 @@ export default function Vender({
             sale_price: sale.sale_price,
             commission: sale.commission || "",
             additional_expenses: sale.additional_expenses || "",
-            expenses_description: sale.expenses_description || "",
             total_amount: sale.total_amount,
             notes: sale.notes || "",
             sale_date: formatDateForInput(sale.sale_date),
@@ -681,13 +679,6 @@ export default function Vender({
                                                                     sale.additional_expenses
                                                                 )}
                                                             </p>
-                                                            {sale.expenses_description && (
-                                                                <p className="text-xs text-gray-400 dark:text-gray-500 truncate max-w-32">
-                                                                    {
-                                                                        sale.expenses_description
-                                                                    }
-                                                                </p>
-                                                            )}
                                                         </div>
                                                     </div>
                                                 )}
@@ -1159,29 +1150,6 @@ export default function Vender({
                                     </div>
 
                                     {/* Descripción de Gastos Adicionales */}
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                            Descripción de Gastos Adicionales
-                                        </label>
-                                        <textarea
-                                            value={data.expenses_description}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "expenses_description",
-                                                    e.target.value
-                                                )
-                                            }
-                                            rows="2"
-                                            className="w-full px-2 sm:px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 resize-none"
-                                            placeholder="Detalla los gastos adicionales (envío, empaque, etc.)..."
-                                        />
-                                        {errors.expenses_description && (
-                                            <p className="text-red-500 text-xs mt-1">
-                                                {errors.expenses_description}
-                                            </p>
-                                        )}
-                                    </div>
-
                                     {/* Notas */}
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
