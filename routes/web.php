@@ -4,7 +4,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
@@ -25,12 +24,8 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return redirect()->route('mi-login');
+    return redirect()->route('login');
 });
-
-Route::get('/mi-login', function () {
-    return Inertia::render('MiLogin');
-})->name('mi-login');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -71,9 +66,6 @@ Route::middleware('auth')->group(function () {
     // Ruta adicional para subcategorías
     Route::get('/api/categories/{parentId}/subcategories', [CategoryController::class, 'getSubcategories'])->name('categories.subcategories');
 
-    // Rutas de Inversión
-    Route::get('/inversion', [InvestmentController::class, 'index'])->name('inversion');
-    Route::resource('investments', InvestmentController::class)->except(['create', 'edit']);
 
     // Rutas de Ventas
     Route::get('/vender', [SaleController::class, 'index'])->name('vender');

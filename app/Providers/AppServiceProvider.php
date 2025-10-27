@@ -18,10 +18,6 @@ use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\CategoryRepository;
 use App\Services\Contracts\CategoryServiceInterface;
 use App\Services\CategoryService;
-use App\Repositories\Contracts\InvestmentRepositoryInterface;
-use App\Repositories\InvestmentRepository;
-use App\Services\Contracts\InvestmentServiceInterface;
-use App\Services\InvestmentService;
 use App\Repositories\Contracts\SaleRepositoryInterface;
 use App\Repositories\SaleRepository;
 use App\Services\Contracts\SaleServiceInterface;
@@ -44,7 +40,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProviderRepositoryInterface::class, ProviderRepository::class);
         $this->app->bind(CurrencyRepositoryInterface::class, CurrencyRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
-        $this->app->bind(InvestmentRepositoryInterface::class, InvestmentRepository::class);
         $this->app->bind(SaleRepositoryInterface::class, SaleRepository::class);
         $this->app->bind(AnalyticsRepositoryInterface::class, AnalyticsRepository::class);
 
@@ -53,7 +48,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProviderServiceInterface::class, ProviderService::class);
         $this->app->bind(CurrencyServiceInterface::class, CurrencyService::class);
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
-        $this->app->bind(InvestmentServiceInterface::class, InvestmentService::class);
         $this->app->bind(SaleServiceInterface::class, SaleService::class);
         $this->app->bind(AnalyticsServiceInterface::class, AnalyticsService::class);
     }

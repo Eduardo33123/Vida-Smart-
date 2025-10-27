@@ -16,8 +16,6 @@ const Sidebar = ({ isOpen, onClose, user }) => {
         },
         { name: "Vender", href: "/vender", icon: "🛒" },
         { name: "Analytics", href: "/analytics", icon: "📊" },
-        { name: "Inversión", href: "/inversion", icon: "💰" },
-        { name: "Marca", href: "/marca", icon: "🏪" },
         {
             name: "Instalaciones / Servicios",
             href: "/instalaciones",
@@ -45,13 +43,13 @@ const Sidebar = ({ isOpen, onClose, user }) => {
             {/* Sidebar */}
             <div
                 className={`
-                fixed top-0 left-0 h-full w-64 bg-gray-800 border-r border-gray-700 text-white transform transition-transform duration-300 ease-in-out z-50
+                fixed top-0 left-0 h-full w-64 bg-gray-800 border-r border-gray-700 text-white transform transition-transform duration-300 ease-in-out z-50 rounded-r-2xl
                 ${isOpen ? "translate-x-0" : "-translate-x-full"}
                 lg:translate-x-0 lg:relative lg:z-auto flex flex-col
             `}
             >
                 {/* Header del Sidebar */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-700 flex-shrink-0">
+                <div className="flex items-center justify-between p-6 border-b border-gray-700 flex-shrink-0 rounded-tr-2xl">
                     <h1 className="text-xl font-bold text-white">Vida Smart</h1>
                     <button
                         onClick={onClose}
@@ -68,7 +66,7 @@ const Sidebar = ({ isOpen, onClose, user }) => {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg mb-2 transition-colors duration-200"
+                                className="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-xl mb-2 transition-colors duration-200"
                             >
                                 <span className="text-xl mr-3">
                                     {item.icon}
@@ -80,18 +78,18 @@ const Sidebar = ({ isOpen, onClose, user }) => {
                 </nav>
 
                 {/* Footer del Sidebar */}
-                <div className="mt-auto p-6 border-t border-gray-700 flex-shrink-0">
+                <div className="mt-auto p-6 border-t border-gray-800 flex-shrink-0 rounded-br-2xl">
                     <div className="flex items-center mb-4">
-                        <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-bold text-white">
+                        <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-bold text-gray-300">
                                 {user ? user.name.charAt(0).toUpperCase() : "U"}
                             </span>
                         </div>
                         <div className="ml-3">
-                            <p className="text-sm font-medium text-white">
+                            <p className="text-sm font-medium text-gray-300">
                                 {user ? user.name : "Usuario"}
                             </p>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500">
                                 {user ? user.email : "usuario@ejemplo.com"}
                             </p>
                         </div>
@@ -100,7 +98,7 @@ const Sidebar = ({ isOpen, onClose, user }) => {
                     {/* Botón de Logout */}
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-colors duration-200"
+                        className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-900 rounded-lg transition-colors duration-200"
                     >
                         <span className="mr-2">🚪</span>
                         Cerrar Sesión
