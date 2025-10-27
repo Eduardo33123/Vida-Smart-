@@ -45,7 +45,7 @@ const Dashboard = ({ analytics, recentSales, statistics }) => {
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-6">
+                            <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mr-6 border border-gray-600">
                                 <span className="text-white text-2xl">🏠</span>
                             </div>
                             <div>
@@ -61,9 +61,9 @@ const Dashboard = ({ analytics, recentSales, statistics }) => {
 
                     {/* Cards de estadísticas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-2xl p-6 border border-gray-600 hover:border-gray-500 transition-all duration-300">
+                        <div className="bg-gray-800 rounded-xl shadow-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
                             <div className="flex items-center">
-                                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4">
+                                <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mr-4 border border-gray-600">
                                     <span className="text-white text-xl">
                                         👥
                                     </span>
@@ -79,9 +79,9 @@ const Dashboard = ({ analytics, recentSales, statistics }) => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-2xl p-6 border border-gray-600 hover:border-gray-500 transition-all duration-300">
+                        <div className="bg-gray-800 rounded-xl shadow-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
                             <div className="flex items-center">
-                                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mr-4 border border-gray-600">
                                     <span className="text-white text-xl">
                                         💰
                                     </span>
@@ -99,9 +99,9 @@ const Dashboard = ({ analytics, recentSales, statistics }) => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-2xl p-6 border border-gray-600 hover:border-gray-500 transition-all duration-300">
+                        <div className="bg-gray-800 rounded-xl shadow-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
                             <div className="flex items-center">
-                                <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mr-4">
+                                <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mr-4 border border-gray-600">
                                     <span className="text-white text-xl">
                                         📈
                                     </span>
@@ -126,9 +126,9 @@ const Dashboard = ({ analytics, recentSales, statistics }) => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-2xl p-6 border border-gray-600 hover:border-gray-500 transition-all duration-300">
+                        <div className="bg-gray-800 rounded-xl shadow-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
                             <div className="flex items-center">
-                                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mr-4">
+                                <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center mr-4 border border-gray-600">
                                     <span className="text-white text-xl">
                                         🛒
                                     </span>
