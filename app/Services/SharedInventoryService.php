@@ -16,11 +16,18 @@ class SharedInventoryService
      */
     public function getUserInventory(int $userId): Collection
     {
-        return SharedInventory::with(['product.category', 'product.currency'])
+        return SharedInventory::with(['product.category', 'product.currency', 'user'])
             ->where('user_id', $userId)
             ->where('quantity', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                // Asegurar que la relación user esté cargada
+                if (!$item->relationLoaded('user') || !$item->user) {
+                    $item->load('user');
+                }
+                return $item;
+            });
     }
 
     /**
@@ -31,7 +38,14 @@ class SharedInventoryService
         return SharedInventory::with(['product.category', 'product.currency', 'user'])
             ->where('quantity', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                // Asegurar que la relación user esté cargada
+                if (!$item->relationLoaded('user') || !$item->user) {
+                    $item->load('user');
+                }
+                return $item;
+            });
     }
 
     /**

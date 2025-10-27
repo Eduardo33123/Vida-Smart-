@@ -43,6 +43,19 @@ class SharedInventoryController extends Controller
         $users = $this->sharedInventoryService->getAvailableUsers();
 
         Log::info('Inventario obtenido:', ['inventory_count' => $inventory->count()]);
+        
+        // Debug: verificar la estructura del inventario
+        if ($inventory->count() > 0) {
+            $firstItem = $inventory->first();
+            Log::info('DEBUG - Primer item del inventario:', [
+                'item_id' => $firstItem->id,
+                'user_id' => $firstItem->user_id,
+                'user_loaded' => $firstItem->relationLoaded('user'),
+                'user_data' => $firstItem->user ? $firstItem->user->toArray() : 'NULL',
+                'user_name' => $firstItem->user?->name ?? 'NO NAME'
+            ]);
+        }
+        
         Log::info('Productos disponibles para dividir:', [
             'products_count' => $products->count(),
             'products' => $products->pluck('name', 'id')->toArray()

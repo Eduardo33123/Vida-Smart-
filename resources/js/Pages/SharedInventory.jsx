@@ -137,19 +137,13 @@ export default function SharedInventory({
         });
     };
 
-    const getCategoryName = (categoryId) => {
-        const categories = {
-            1: "Iluminación",
-            2: "Seguridad",
-            3: "Climatización",
-            4: "Entretenimiento",
-            5: "Cocina",
-            6: "Baño",
-            7: "Jardín",
-            8: "Altavoces",
-            9: "Otros",
-        };
-        return categories[categoryId] || "Sin categoría";
+    const getCategoryName = (product) => {
+        // Usar la categoría real del producto si está disponible
+        if (product?.category?.nombre) {
+            return product.category.nombre;
+        }
+        // Fallback si no hay categoría cargada
+        return "Sin categoría";
     };
 
     // Función para manejar el filtro de usuario
@@ -430,10 +424,7 @@ export default function SharedInventory({
                                                         Categoría
                                                     </p>
                                                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {getCategoryName(
-                                                            item.product
-                                                                ?.category_id
-                                                        )}
+                                                        {getCategoryName(item.product)}
                                                     </p>
                                                 </div>
                                             </div>
@@ -581,7 +572,7 @@ export default function SharedInventory({
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-900 dark:text-white">
-                                                        {getCategoryName(item.product?.category_id)}
+                                                        {getCategoryName(item.product)}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
