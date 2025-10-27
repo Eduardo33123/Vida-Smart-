@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useForm } from "@inertiajs/react";
 
 const Login = () => {
@@ -14,123 +14,137 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-black py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <div>
-                    {/* Logo */}
-                    <div className="flex justify-center mb-6">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
+            {/* Efectos de fondo */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* Contenedor principal */}
+            <div className="relative w-full max-w-md">
+                {/* Logo y título */}
+                <div className="text-center mb-8">
+                    {/* Imagen del logo */}
+                    <div className="flex justify-center mb-4">
                         <img
                             src="/images/logo.png"
-                            alt="Logo de la empresa"
+                            alt="Vida Smart Logo"
                             className="h-56 w-auto"
                         />
                     </div>
-
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-                        Iniciar Sesión
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-gray-300">
-                        O{" "}
-                        <Link
-                            href={route("register")}
-                            className="font-medium text-indigo-400 hover:text-indigo-300"
-                        >
-                            crear una cuenta nueva
-                        </Link>
-                    </p>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={submit}>
-                    <div className="rounded-md shadow-sm -space-y-px">
+
+                {/* Formulario */}
+                <div className="bg-black/40 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+                    <form onSubmit={submit} className="space-y-6">
+                        {/* Email */}
                         <div>
-                            <label htmlFor="email" className="sr-only">
-                                Email
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-gray-300 mb-2"
+                            >
+                                Correo Electrónico
                             </label>
                             <input
                                 id="email"
                                 name="email"
                                 type="email"
-                                autoComplete="email"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-600 bg-black placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Dirección de email"
                                 value={data.email}
+                                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                placeholder="tu@email.com"
+                                autoComplete="username"
+                                required
                                 onChange={(e) =>
                                     setData("email", e.target.value)
                                 }
                             />
                             {errors.email && (
-                                <p className="mt-1 text-sm text-red-400">
+                                <p className="mt-2 text-red-400 text-sm">
                                     {errors.email}
                                 </p>
                             )}
                         </div>
+
+                        {/* Password */}
                         <div>
-                            <label htmlFor="password" className="sr-only">
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-gray-300 mb-2"
+                            >
                                 Contraseña
                             </label>
                             <input
                                 id="password"
                                 name="password"
                                 type="password"
+                                value={data.password}
+                                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                placeholder="••••••••"
                                 autoComplete="current-password"
                                 required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-600 bg-black placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Contraseña"
-                                value={data.password}
                                 onChange={(e) =>
                                     setData("password", e.target.value)
                                 }
                             />
                             {errors.password && (
-                                <p className="mt-1 text-sm text-red-400">
+                                <p className="mt-2 text-red-400 text-sm">
                                     {errors.password}
                                 </p>
                             )}
                         </div>
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember"
-                                name="remember"
-                                type="checkbox"
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 bg-black rounded"
-                                checked={data.remember}
-                                onChange={(e) =>
-                                    setData("remember", e.target.checked)
-                                }
-                            />
-                            <label
-                                htmlFor="remember"
-                                className="ml-2 block text-sm text-gray-300"
-                            >
-                                Recordarme
+                        {/* Remember me */}
+                        <div className="flex items-center justify-between">
+                            <label className="flex items-center">
+                                <input
+                                    id="remember"
+                                    name="remember"
+                                    type="checkbox"
+                                    checked={data.remember}
+                                    onChange={(e) =>
+                                        setData("remember", e.target.checked)
+                                    }
+                                    className="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                                />
+                                <span className="ml-2 text-sm text-gray-300">
+                                    Recordarme
+                                </span>
                             </label>
-                        </div>
 
-                        <div className="text-sm">
                             <Link
                                 href={route("password.request")}
-                                className="font-medium text-indigo-400 hover:text-indigo-300"
+                                className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-200"
                             >
                                 ¿Olvidaste tu contraseña?
                             </Link>
                         </div>
-                    </div>
 
-                    <div>
+                        {/* Botón de login */}
                         <button
                             type="submit"
                             disabled={processing}
-                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
                             {processing
                                 ? "Iniciando sesión..."
                                 : "Iniciar Sesión"}
                         </button>
+                    </form>
+
+                    {/* Enlace a registro */}
+                    <div className="mt-6 text-center">
+                        <p className="text-gray-400 text-sm">
+                            ¿No tienes cuenta?{" "}
+                            <Link
+                                href={route("register")}
+                                className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200"
+                            >
+                                Regístrate aquí
+                            </Link>
+                        </p>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
