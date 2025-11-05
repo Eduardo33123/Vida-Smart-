@@ -57,6 +57,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Force HTTPS when behind a proxy (like Render)
+        // Check if request is secure via proxy headers
+        if (request()->server('HTTP_X_FORWARDED_PROTO') === 'https' || 
+            request()->server('HTTPS') === 'on' ||
+            (config('app.url') && str_contains(config('app.url'), 'https://'))) {
+            \URL::forceScheme('https');
+        }
     }
 }
