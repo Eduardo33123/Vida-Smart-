@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../Components/Layout";
+import Layout from "../Components/Layout.jsx";
 
 const Dashboard = ({ analytics, recentSales, statistics }) => {
     // Función para formatear moneda
