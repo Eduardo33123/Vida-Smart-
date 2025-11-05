@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, useForm, router } from "@inertiajs/react";
-import Layout from "../components/Layout";
+import Layout from "../Components/Layout";
 
 export default function SharedInventory({
     inventory,
@@ -363,153 +363,160 @@ export default function SharedInventory({
                             // Vista de Cards
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {inventory.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
-                                >
-                                    {/* Header de la Card */}
                                     <div
-                                        className={`p-4 ${
-                                            item.user_id == currentUserId
-                                                ? "bg-gradient-to-r from-green-500 to-emerald-600"
-                                                : "bg-gradient-to-r from-purple-500 to-indigo-600"
-                                        }`}
+                                        key={item.id}
+                                        className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105"
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center">
-                                                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                                                    <span className="text-white text-sm">
-                                                        {item.user_id ==
-                                                        currentUserId
-                                                            ? "👤"
-                                                            : "📦"}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-white font-bold text-sm truncate max-w-32">
-                                                        {item.product?.name ||
-                                                            "Producto no encontrado"}
-                                                    </h3>
-                                                    <p className="text-white/80 text-xs">
-                                                        V{item.version} •{" "}
-                                                        {item.user?.name ||
-                                                            "Usuario desconocido"}
-                                                        {item.user_id ==
-                                                            currentUserId &&
-                                                            " (TÚ)"}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className="text-white font-bold text-lg">
-                                                    {item.quantity}
-                                                </p>
-                                                <p className="text-white/80 text-xs">
-                                                    unidades
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Contenido de la Card */}
-                                    <div className="p-4">
-                                        <div className="space-y-3">
-                                            {/* Categoría */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    🏷️
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Categoría
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {getCategoryName(item.product)}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Precio de Compra */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    💰
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Precio de Compra
-                                                    </p>
-                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {formatPrice(
-                                                            item.purchase_price
-                                                        )}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Valor Total */}
-                                            <div className="flex items-center">
-                                                <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
-                                                    💎
-                                                </span>
-                                                <div>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        Valor Total
-                                                    </p>
-                                                    <p className="text-sm font-medium text-green-600 dark:text-green-400">
-                                                        {formatPrice(
-                                                            item.quantity *
-                                                                (item.purchase_price ||
-                                                                    0)
-                                                        )}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Notas */}
-                                            {item.notes && (
-                                                <div className="flex items-start">
-                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm mt-1">
-                                                        📝
-                                                    </span>
+                                        {/* Header de la Card */}
+                                        <div
+                                            className={`p-4 ${
+                                                item.user_id == currentUserId
+                                                    ? "bg-gradient-to-r from-green-500 to-emerald-600"
+                                                    : "bg-gradient-to-r from-purple-500 to-indigo-600"
+                                            }`}
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center">
+                                                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                                                        <span className="text-white text-sm">
+                                                            {item.user_id ==
+                                                            currentUserId
+                                                                ? "👤"
+                                                                : "📦"}
+                                                        </span>
+                                                    </div>
                                                     <div>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                            Notas
-                                                        </p>
-                                                        <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                            {item.notes}
+                                                        <h3 className="text-white font-bold text-sm truncate max-w-32">
+                                                            {item.product
+                                                                ?.name ||
+                                                                "Producto no encontrado"}
+                                                        </h3>
+                                                        <p className="text-white/80 text-xs">
+                                                            V{item.version} •{" "}
+                                                            {item.user?.name ||
+                                                                "Usuario desconocido"}
+                                                            {item.user_id ==
+                                                                currentUserId &&
+                                                                " (TÚ)"}
                                                         </p>
                                                     </div>
                                                 </div>
-                                            )}
+                                                <div className="text-right">
+                                                    <p className="text-white font-bold text-lg">
+                                                        {item.quantity}
+                                                    </p>
+                                                    <p className="text-white/80 text-xs">
+                                                        unidades
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {/* Botones de Acción */}
-                                    <div className="px-4 pb-4">
-                                        <div className="flex space-x-2">
-                                            <button
-                                                onClick={() =>
-                                                    handleEditInventory(item)
-                                                }
-                                                className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
-                                            >
-                                                <span>✏️</span>
-                                                <span>Editar</span>
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteInventory(item)
-                                                }
-                                                className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
-                                            >
-                                                <span>🗑️</span>
-                                                <span>Eliminar</span>
-                                            </button>
+                                        {/* Contenido de la Card */}
+                                        <div className="p-4">
+                                            <div className="space-y-3">
+                                                {/* Categoría */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        🏷️
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Categoría
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {getCategoryName(
+                                                                item.product
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Precio de Compra */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        💰
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Precio de Compra
+                                                        </p>
+                                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {formatPrice(
+                                                                item.purchase_price
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Valor Total */}
+                                                <div className="flex items-center">
+                                                    <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm">
+                                                        💎
+                                                    </span>
+                                                    <div>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            Valor Total
+                                                        </p>
+                                                        <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                                                            {formatPrice(
+                                                                item.quantity *
+                                                                    (item.purchase_price ||
+                                                                        0)
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Notas */}
+                                                {item.notes && (
+                                                    <div className="flex items-start">
+                                                        <span className="text-gray-500 dark:text-gray-400 mr-3 text-sm mt-1">
+                                                            📝
+                                                        </span>
+                                                        <div>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                                Notas
+                                                            </p>
+                                                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                                {item.notes}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Botones de Acción */}
+                                        <div className="px-4 pb-4">
+                                            <div className="flex space-x-2">
+                                                <button
+                                                    onClick={() =>
+                                                        handleEditInventory(
+                                                            item
+                                                        )
+                                                    }
+                                                    className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
+                                                >
+                                                    <span>✏️</span>
+                                                    <span>Editar</span>
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDeleteInventory(
+                                                            item
+                                                        )
+                                                    }
+                                                    className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-3 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center space-x-1"
+                                                >
+                                                    <span>🗑️</span>
+                                                    <span>Eliminar</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
                         ) : (
                             // Vista de Tabla
                             <div className="overflow-x-auto">
@@ -556,7 +563,9 @@ export default function SharedInventory({
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                                {item.product?.name || "Producto no encontrado"}
+                                                                {item.product
+                                                                    ?.name ||
+                                                                    "Producto no encontrado"}
                                                             </div>
                                                             <div className="text-sm text-gray-500 dark:text-gray-400">
                                                                 V{item.version}
@@ -566,13 +575,18 @@ export default function SharedInventory({
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-900 dark:text-white">
-                                                        {item.user?.name || "Usuario desconocido"}
-                                                        {item.user_id == currentUserId && " (TÚ)"}
+                                                        {item.user?.name ||
+                                                            "Usuario desconocido"}
+                                                        {item.user_id ==
+                                                            currentUserId &&
+                                                            " (TÚ)"}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-900 dark:text-white">
-                                                        {getCategoryName(item.product)}
+                                                        {getCategoryName(
+                                                            item.product
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -582,19 +596,27 @@ export default function SharedInventory({
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-900 dark:text-white">
-                                                        {formatPrice(item.purchase_price)}
+                                                        {formatPrice(
+                                                            item.purchase_price
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-green-600 dark:text-green-400">
-                                                        {formatPrice(item.quantity * (item.purchase_price || 0))}
+                                                        {formatPrice(
+                                                            item.quantity *
+                                                                (item.purchase_price ||
+                                                                    0)
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                     <div className="flex space-x-2">
                                                         <button
                                                             onClick={() =>
-                                                                handleEditInventory(item)
+                                                                handleEditInventory(
+                                                                    item
+                                                                )
                                                             }
                                                             className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 flex items-center space-x-1"
                                                         >
@@ -603,12 +625,16 @@ export default function SharedInventory({
                                                         </button>
                                                         <button
                                                             onClick={() =>
-                                                                handleDeleteInventory(item)
+                                                                handleDeleteInventory(
+                                                                    item
+                                                                )
                                                             }
                                                             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 flex items-center space-x-1"
                                                         >
                                                             <span>🗑️</span>
-                                                            <span>Eliminar</span>
+                                                            <span>
+                                                                Eliminar
+                                                            </span>
                                                         </button>
                                                     </div>
                                                 </td>

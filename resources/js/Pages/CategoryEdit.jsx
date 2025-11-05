@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../components/Layout";
+import Layout from "../Components/Layout";
 
 const CategoryEdit = ({ category, rootCategories }) => {
     const { data, setData, put, processing, errors } = useForm({
@@ -19,9 +19,36 @@ const CategoryEdit = ({ category, rootCategories }) => {
 
     // Iconos disponibles para categorías
     const availableIcons = [
-        "📂", "💡", "🔒", "🌡️", "🎤", "⚡", "🔧", "📹", "👁️", "🚨",
-        "🌀", "❄️", "📡", "📱", "🔌", "📊", "☀️", "📐", "🔋", "🌈",
-        "🔘", "🏠", "🚪", "🪟", "🛏️", "🛁", "🍳", "📺", "🎮", "🎵"
+        "📂",
+        "💡",
+        "🔒",
+        "🌡️",
+        "🎤",
+        "⚡",
+        "🔧",
+        "📹",
+        "👁️",
+        "🚨",
+        "🌀",
+        "❄️",
+        "📡",
+        "📱",
+        "🔌",
+        "📊",
+        "☀️",
+        "📐",
+        "🔋",
+        "🌈",
+        "🔘",
+        "🏠",
+        "🚪",
+        "🪟",
+        "🛏️",
+        "🛁",
+        "🍳",
+        "📺",
+        "🎮",
+        "🎵",
     ];
 
     return (
@@ -36,7 +63,8 @@ const CategoryEdit = ({ category, rootCategories }) => {
                             ✏️ Editar Categoría
                         </h1>
                         <p className="text-gray-400">
-                            Modifica los datos de la categoría "{category.nombre}"
+                            Modifica los datos de la categoría "
+                            {category.nombre}"
                         </p>
                     </div>
                     <Link
@@ -60,7 +88,9 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                 <input
                                     type="text"
                                     value={data.nombre}
-                                    onChange={(e) => setData("nombre", e.target.value)}
+                                    onChange={(e) =>
+                                        setData("nombre", e.target.value)
+                                    }
                                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     placeholder="Ej: Iluminación Inteligente"
                                     required
@@ -82,7 +112,9 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                         <button
                                             key={icon}
                                             type="button"
-                                            onClick={() => setData("icono", icon)}
+                                            onClick={() =>
+                                                setData("icono", icon)
+                                            }
                                             className={`p-2 text-2xl rounded border-2 transition-colors ${
                                                 data.icono === icon
                                                     ? "border-indigo-500 bg-indigo-100"
@@ -107,10 +139,14 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                 </label>
                                 <select
                                     value={data.parent_id}
-                                    onChange={(e) => setData("parent_id", e.target.value)}
+                                    onChange={(e) =>
+                                        setData("parent_id", e.target.value)
+                                    }
                                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 >
-                                    <option value="">Sin categoría padre (Categoría raíz)</option>
+                                    <option value="">
+                                        Sin categoría padre (Categoría raíz)
+                                    </option>
                                     {rootCategories
                                         .filter((cat) => cat.id !== category.id) // Evitar auto-referencia
                                         .map((cat) => (
@@ -134,7 +170,12 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                 <input
                                     type="number"
                                     value={data.sort_order}
-                                    onChange={(e) => setData("sort_order", parseInt(e.target.value) || 0)}
+                                    onChange={(e) =>
+                                        setData(
+                                            "sort_order",
+                                            parseInt(e.target.value) || 0
+                                        )
+                                    }
                                     className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     min="0"
                                 />
@@ -151,7 +192,12 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                     <input
                                         type="checkbox"
                                         checked={data.is_active}
-                                        onChange={(e) => setData("is_active", e.target.checked)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "is_active",
+                                                e.target.checked
+                                            )
+                                        }
                                         className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 bg-gray-800 rounded"
                                     />
                                     <span className="ml-2 block text-sm text-gray-300">
@@ -168,7 +214,9 @@ const CategoryEdit = ({ category, rootCategories }) => {
                             </label>
                             <textarea
                                 value={data.descripcion}
-                                onChange={(e) => setData("descripcion", e.target.value)}
+                                onChange={(e) =>
+                                    setData("descripcion", e.target.value)
+                                }
                                 rows={4}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 placeholder="Describe la categoría y su propósito..."
@@ -193,7 +241,9 @@ const CategoryEdit = ({ category, rootCategories }) => {
                                 disabled={processing}
                                 className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors disabled:opacity-50"
                             >
-                                {processing ? "Guardando..." : "Actualizar Categoría"}
+                                {processing
+                                    ? "Guardando..."
+                                    : "Actualizar Categoría"}
                             </button>
                         </div>
                     </form>

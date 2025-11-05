@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../../components/Layout";
+import Layout from "../../Components/Layout";
 
 const RevenueDetails = ({ sales, totalRevenue }) => {
     const formatCurrency = (amount) => {
@@ -27,7 +27,8 @@ const RevenueDetails = ({ sales, totalRevenue }) => {
                                 💰 Detalles de Ingresos
                             </h1>
                             <p className="text-gray-600 dark:text-gray-400">
-                                Todas las ventas que contribuyen al total de ingresos
+                                Todas las ventas que contribuyen al total de
+                                ingresos
                             </p>
                         </div>
                         <Link
@@ -63,7 +64,7 @@ const RevenueDetails = ({ sales, totalRevenue }) => {
                             Todas las Ventas ({sales.length})
                         </h3>
                     </div>
-                    
+
                     <div className="overflow-x-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead className="bg-gradient-to-r from-blue-500 to-cyan-600">
@@ -94,29 +95,38 @@ const RevenueDetails = ({ sales, totalRevenue }) => {
                             <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {sales && sales.length > 0 ? (
                                     sales.map((sale) => (
-                                        <tr key={sale.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <tr
+                                            key={sale.id}
+                                            className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                        >
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                                 {formatDate(sale.sale_date)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                    {sale.product?.name || "Producto no encontrado"}
+                                                    {sale.product?.name ||
+                                                        "Producto no encontrado"}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                                 {sale.client_name || "-"}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                                {sale.seller?.name || "Vendedor no encontrado"}
+                                                {sale.seller?.name ||
+                                                    "Vendedor no encontrado"}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                                 {sale.quantity_sold}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                                {formatCurrency(sale.sale_price)}
+                                                {formatCurrency(
+                                                    sale.sale_price
+                                                )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600 dark:text-green-400">
-                                                {formatCurrency(sale.total_amount)}
+                                                {formatCurrency(
+                                                    sale.total_amount
+                                                )}
                                             </td>
                                         </tr>
                                     ))

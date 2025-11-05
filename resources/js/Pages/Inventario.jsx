@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../components/Layout";
-import { ProductModal } from "../components/Modal";
+import Layout from "../Components/Layout";
+import { ProductModal } from "../Components/Modal";
 
 const Inventario = ({
     products = [],

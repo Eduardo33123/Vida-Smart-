@@ -1,16 +1,20 @@
-import React from 'react';
-import Layout from '../components/Layout';
+import React from "react";
+import Layout from "../Components/Layout";
 
 const Settings = () => {
     return (
         <Layout>
             <div className="p-6">
                 <div className="max-w-4xl mx-auto">
-                    <h1 className="text-3xl font-bold text-white mb-8">Configuración</h1>
-                    
+                    <h1 className="text-3xl font-bold text-white mb-8">
+                        Configuración
+                    </h1>
+
                     <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                        <h2 className="text-xl font-semibold text-white mb-6">Configuración del Sistema</h2>
-                        
+                        <h2 className="text-xl font-semibold text-white mb-6">
+                            Configuración del Sistema
+                        </h2>
+
                         <div className="space-y-6">
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -22,7 +26,7 @@ const Settings = () => {
                                     placeholder="Vida Smart"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Email de contacto
@@ -33,7 +37,7 @@ const Settings = () => {
                                     placeholder="contacto@vidasmart.com"
                                 />
                             </div>
-                            
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Descripción
@@ -44,7 +48,7 @@ const Settings = () => {
                                     placeholder="Descripción de la aplicación..."
                                 />
                             </div>
-                            
+
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -54,7 +58,7 @@ const Settings = () => {
                                     Habilitar notificaciones por email
                                 </label>
                             </div>
-                            
+
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -64,7 +68,7 @@ const Settings = () => {
                                     Modo oscuro (ya activado)
                                 </label>
                             </div>
-                            
+
                             <div className="pt-4">
                                 <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200">
                                     Guardar Configuración

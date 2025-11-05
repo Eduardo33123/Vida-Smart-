@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../components/Layout";
+import Layout from "../Components/Layout";
 
 const ProductEdit = ({
     product,

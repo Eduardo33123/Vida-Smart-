@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../components/Layout";
+import Layout from "../Components/Layout";
 
 const Analytics = ({ analytics }) => {
     const formatCurrency = (amount) => {
@@ -141,7 +141,9 @@ const Analytics = ({ analytics }) => {
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center">
                                 <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mr-4">
-                                    <span className="text-white text-xl">🏆</span>
+                                    <span className="text-white text-xl">
+                                        🏆
+                                    </span>
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -149,7 +151,7 @@ const Analytics = ({ analytics }) => {
                                     </h3>
                                 </div>
                             </div>
-                            
+
                             {/* Botón pequeño en la esquina superior derecha */}
                             <Link
                                 href="/vender"

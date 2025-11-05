@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../../components/Layout";
+import Layout from "../../Components/Layout";
 
 const ProductSalesDetails = ({
     product,
@@ -42,7 +42,6 @@ const ProductSalesDetails = ({
         }
         return date.toLocaleDateString("es-MX");
     };
-
 
     return (
         <Layout>
@@ -229,7 +228,6 @@ const ProductSalesDetails = ({
                         </div>
                     </div>
                 </div>
-
 
                 {/* Tabla de Ventas */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">

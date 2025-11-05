@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../../components/Layout";
+import Layout from "../../Components/Layout";
 
 const CostsDetails = ({ sales, totalCosts }) => {
     const formatCurrency = (amount) => {
@@ -70,7 +70,7 @@ const CostsDetails = ({ sales, totalCosts }) => {
                             Todas las Ventas con Costos ({sales.length})
                         </h3>
                     </div>
-                    
+
                     <div className="overflow-x-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead className="bg-gradient-to-r from-red-500 to-pink-600">
@@ -100,13 +100,17 @@ const CostsDetails = ({ sales, totalCosts }) => {
                                     sales.map((sale) => {
                                         const cost = calculateCost(sale);
                                         return (
-                                            <tr key={sale.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <tr
+                                                key={sale.id}
+                                                className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                            >
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                                     {formatDate(sale.sale_date)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {sale.product?.name || "Producto no encontrado"}
+                                                        {sale.product?.name ||
+                                                            "Producto no encontrado"}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
@@ -116,10 +120,13 @@ const CostsDetails = ({ sales, totalCosts }) => {
                                                     {sale.quantity_sold}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                                    {sale.product?.purchase_price 
-                                                        ? formatCurrency(sale.product.purchase_price)
-                                                        : "N/A"
-                                                    }
+                                                    {sale.product
+                                                        ?.purchase_price
+                                                        ? formatCurrency(
+                                                              sale.product
+                                                                  .purchase_price
+                                                          )
+                                                        : "N/A"}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400">
                                                     {formatCurrency(cost)}

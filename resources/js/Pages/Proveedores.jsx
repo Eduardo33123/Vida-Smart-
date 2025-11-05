@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../components/Layout";
-import { ProviderModal } from "../components/Modal";
+import Layout from "../Components/Layout";
+import { ProviderModal } from "../Components/Modal";
 
 const Proveedores = ({ providers = [], currencies = [] }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);

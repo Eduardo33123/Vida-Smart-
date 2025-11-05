@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, useForm, router } from "@inertiajs/react";
-import Layout from "../components/Layout";
+import Layout from "../Components/Layout";
 
 export default function Vender({
     sales,
@@ -830,7 +830,9 @@ export default function Vender({
                                                             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105 flex items-center space-x-1"
                                                         >
                                                             <span>🗑️</span>
-                                                            <span>Eliminar</span>
+                                                            <span>
+                                                                Eliminar
+                                                            </span>
                                                         </button>
                                                     </div>
                                                 </td>
