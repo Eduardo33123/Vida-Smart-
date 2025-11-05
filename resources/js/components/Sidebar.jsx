@@ -98,10 +98,18 @@ const Sidebar = ({ isOpen, onClose, user }) => {
                     {/* Botón de Logout */}
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-900 rounded-lg transition-colors duration-200"
+                        className="w-full flex flex-col items-center px-4 py-3 text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-900 rounded-lg transition-colors duration-200"
                     >
-                        <span className="mr-2">🚪</span>
-                        Cerrar Sesión
+                        <div className="flex items-center mb-1">
+                            <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs font-bold text-white mr-2">
+                                1 E
+                            </span>
+                            <span className="font-semibold">Eduardo</span>
+                        </div>
+                        <div className="text-xs text-gray-500 mb-1">
+                            it_aux@cwsmexico.mx
+                        </div>
+                        <div className="text-xs">🚪 Cerrar Sesión</div>
                     </button>
                 </div>
             </div>
