@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../Components/Layout.jsx";
-import { CategoryModal } from "../Components/Modal.jsx";
+import Layout from "../components/Layout.jsx";
+import { CategoryModal } from "../components/Modal.jsx";
 
 const Categorias = ({
     categories = [],

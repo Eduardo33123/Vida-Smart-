@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
-import Layout from "../Components/Layout.jsx";
+import Layout from "../components/Layout.jsx";
 
 const ProductShow = ({ product, users = [] }) => {
     // Estados para el modal de ventas

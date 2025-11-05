@@ -1,6 +1,6 @@
 import React from "react";
 import { Head, Link } from "@inertiajs/react";
-import Layout from "../Components/Layout.jsx";
+import Layout from "../components/Layout.jsx";
 
 const CategoryShow = ({ category }) => {
     return (

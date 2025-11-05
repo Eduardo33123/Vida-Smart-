@@ -1,7 +1,7 @@
 import GuestLayout from "@/Layouts/GuestLayout.jsx";
-import InputError from "@/Components/InputError.jsx";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import TextInput from "@/Components/TextInput.jsx";
+import InputError from "@/components/InputError.jsx";
+import PrimaryButton from "@/components/PrimaryButton.jsx";
+import TextInput from "@/components/TextInput.jsx";
 import { Head, useForm } from "@inertiajs/react";
 
 export default function ForgotPassword({ status }) {

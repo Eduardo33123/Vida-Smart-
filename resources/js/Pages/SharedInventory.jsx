@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Head, useForm, router } from "@inertiajs/react";
-import Layout from "../Components/Layout.jsx";
+import Layout from "../components/Layout.jsx";
 
 export default function SharedInventory({
     inventory,
